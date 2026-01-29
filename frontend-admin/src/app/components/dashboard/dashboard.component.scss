@@ -1,0 +1,96 @@
+.dashboard-container {
+  height: 100vh;
+}
+
+.dashboard-sidenav {
+  width: 260px;
+  background-color: #2c3e50;
+  color: white;
+}
+
+.sidenav-header {
+  padding: 24px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .version {
+    margin: 4px 0 0;
+    font-size: 12px;
+    opacity: 0.8;
+  }
+}
+
+mat-nav-list {
+  padding-top: 16px;
+
+  a {
+    color: #ecf0f1;
+    margin: 4px 8px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &.active {
+      background-color: #667eea;
+      color: white;
+    }
+
+    mat-icon {
+      color: inherit;
+    }
+  }
+
+  .logout-item {
+    color: #e74c3c;
+    margin-top: 16px;
+
+    &:hover {
+      background-color: rgba(231, 76, 60, 0.1);
+    }
+  }
+}
+
+.dashboard-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+
+  mat-icon {
+    font-size: 24px;
+    height: 24px;
+    width: 24px;
+  }
+
+  .user-name {
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.dashboard-content {
+  padding: 24px;
+  min-height: calc(100vh - 64px);
+  background-color: #f5f5f5;
+}

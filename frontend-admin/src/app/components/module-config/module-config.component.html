@@ -1,0 +1,77 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+
+<mat-dialog-content>
+  <div class="module-info">
+    <p><strong>Warehouse:</strong> {{ data.warehouse.name }}</p>
+    <p><strong>Module:</strong> {{ data.moduleDefinition.name }} ({{ data.moduleDefinition.code }})</p>
+    <p class="description">{{ data.moduleDefinition.description }}</p>
+  </div>
+
+  <form [formGroup]="configForm" class="config-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Execution Order</mat-label>
+      <input matInput type="number" formControlName="executionOrder" placeholder="10, 20, 30...">
+      <mat-hint>Determines the order in which modules execute in the workflow</mat-hint>
+      <mat-error *ngIf="configForm.get('executionOrder')?.hasError('required')">
+        Execution order is required
+      </mat-error>
+      <mat-error *ngIf="configForm.get('executionOrder')?.hasError('min')">
+        Must be at least 1
+      </mat-error>
+    </mat-form-field>
+
+    <div class="checkbox-group">
+      <mat-checkbox formControlName="isRequired">
+        <span class="checkbox-label">
+          Required Module
+          <span class="checkbox-hint">Cannot be skipped in workflow</span>
+        </span>
+      </mat-checkbox>
+
+      <mat-checkbox formControlName="canSkip">
+        <span class="checkbox-label">
+          Can Skip
+          <span class="checkbox-hint">Allow conditional skipping based on rules</span>
+        </span>
+      </mat-checkbox>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width" *ngIf="configForm.get('canSkip')?.value">
+      <mat-label>Skip Conditions (JSON)</mat-label>
+      <textarea 
+        matInput 
+        formControlName="skipConditions" 
+        rows="3"
+        placeholder='{"skipIfProductType":"digital"}'></textarea>
+      <mat-hint>JSON object defining when to skip this module</mat-hint>
+      <mat-error *ngIf="!isJsonValid(configForm.get('skipConditions')?.value)">
+        Invalid JSON format
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Custom Settings (JSON)</mat-label>
+      <textarea 
+        matInput 
+        formControlName="customSettings" 
+        rows="4"
+        placeholder='{"maxCapacity":100,"autoRelease":true}'></textarea>
+      <mat-hint>Warehouse-specific configuration for this module</mat-hint>
+      <mat-error *ngIf="!isJsonValid(configForm.get('customSettings')?.value)">
+        Invalid JSON format
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="loading">Cancel</button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="onSubmit()" 
+    [disabled]="loading || configForm.invalid">
+    <mat-spinner *ngIf="loading" diameter="20" class="button-spinner"></mat-spinner>
+    <span *ngIf="!loading">{{ isEditMode ? 'Update' : 'Enable' }}</span>
+  </button>
+</mat-dialog-actions>

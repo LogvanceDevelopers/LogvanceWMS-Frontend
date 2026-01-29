@@ -1,0 +1,111 @@
+<div class="module-list-container">
+  <mat-card class="header-card">
+    <mat-card-header>
+      <mat-card-title>Module Management</mat-card-title>
+      <mat-card-subtitle>Configure warehouse-specific module activation</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-form-field appearance="outline" class="warehouse-select">
+        <mat-label>Select Warehouse</mat-label>
+        <mat-select [(ngModel)]="selectedWarehouse" (selectionChange)="onWarehouseChange()">
+          <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse">
+            {{ warehouse.name }} ({{ warehouse.code }})
+          </mat-option>
+        </mat-select>
+        <mat-icon matPrefix>warehouse</mat-icon>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="modules-card" *ngIf="selectedWarehouse">
+    <mat-card-header>
+      <mat-card-title>Available Modules</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="loading" class="loading-container">
+        <mat-spinner></mat-spinner>
+      </div>
+
+      <table mat-table [dataSource]="moduleDefinitions" *ngIf="!loading" class="modules-table">
+        <!-- Module Name Column -->
+        <ng-container matColumnDef="moduleName">
+          <th mat-header-cell *matHeaderCellDef>Module</th>
+          <td mat-cell *matCellDef="let module">
+            <div class="module-info">
+              <strong>{{ module.name }}</strong>
+              <span class="module-description">{{ module.description }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Code Column -->
+        <ng-container matColumnDef="code">
+          <th mat-header-cell *matHeaderCellDef>Code</th>
+          <td mat-cell *matCellDef="let module">
+            <mat-chip>{{ module.code }}</mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Execution Order Column -->
+        <ng-container matColumnDef="order">
+          <th mat-header-cell *matHeaderCellDef>Order</th>
+          <td mat-cell *matCellDef="let module">
+            <span *ngIf="getModuleForDefinition(module) as wm">
+              {{ wm.executionOrder }}
+            </span>
+            <span *ngIf="!getModuleForDefinition(module)" class="text-muted">-</span>
+          </td>
+        </ng-container>
+
+        <!-- Required Column -->
+        <ng-container matColumnDef="required">
+          <th mat-header-cell *matHeaderCellDef>Required</th>
+          <td mat-cell *matCellDef="let module">
+            <mat-icon *ngIf="module.isRequired" color="primary" matTooltip="System required">check_circle</mat-icon>
+            <mat-icon *ngIf="!module.isRequired" class="text-muted">remove_circle_outline</mat-icon>
+          </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let module">
+            <mat-chip *ngIf="getModuleForDefinition(module) as wm" [color]="getStatusColor(wm)">
+              {{ getStatusText(wm) }}
+            </mat-chip>
+            <mat-chip *ngIf="!getModuleForDefinition(module)" color="warn">Not Configured</mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let module">
+            <button 
+              mat-icon-button 
+              [matTooltip]="isModuleEnabled(module.code) ? 'Configure' : 'Enable'"
+              (click)="openEnableDialog(module)"
+              color="primary">
+              <mat-icon>{{ isModuleEnabled(module.code) ? 'settings' : 'add_circle' }}</mat-icon>
+            </button>
+
+            <button 
+              mat-icon-button 
+              matTooltip="Disable"
+              *ngIf="getModuleForDefinition(module) as wm"
+              (click)="disableModule(wm)"
+              [disabled]="wm.isRequired"
+              color="warn">
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

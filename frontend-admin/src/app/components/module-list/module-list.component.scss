@@ -1,0 +1,63 @@
+.module-list-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header-card {
+  margin-bottom: 24px;
+}
+
+.warehouse-select {
+  width: 100%;
+  max-width: 400px;
+}
+
+.modules-card {
+  min-height: 400px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.modules-table {
+  width: 100%;
+  margin-top: 16px;
+
+  th {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  td {
+    font-size: 14px;
+  }
+}
+
+.module-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  strong {
+    font-size: 14px;
+  }
+
+  .module-description {
+    font-size: 12px;
+    color: #666;
+  }
+}
+
+.text-muted {
+  color: #999;
+}
+
+mat-chip {
+  font-size: 12px;
+  height: 24px;
+  min-height: 24px;
+}
