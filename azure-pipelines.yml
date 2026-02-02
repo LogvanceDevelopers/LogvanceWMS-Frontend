@@ -53,7 +53,7 @@ stages:
     
     - script: |
         cd frontend
-        npm ci
+        npm install --legacy-peer-deps
       displayName: 'Install Frontend Dependencies'
     
     - script: |
@@ -113,7 +113,7 @@ stages:
     
     - script: |
         cd frontend-admin
-        npm ci
+        npm install --legacy-peer-deps
       displayName: 'Install Admin Dependencies'
     
     - script: |
