@@ -36,6 +36,11 @@ variables:
 pool:
   vmImage: 'ubuntu-latest'
 
+# Global timeout for all jobs (60 minutes)
+variables:
+  - name: System.Debug
+    value: false
+
 stages:
 # =============================================
 # STAGE 1: BUILD FRONTEND (React/Vite)
@@ -45,6 +50,7 @@ stages:
   jobs:
   - job: BuildReact
     displayName: 'Build Frontend'
+    timeoutInMinutes: 60
     steps:
     - task: NodeTool@0
       displayName: 'Install Node.js'
@@ -105,6 +111,7 @@ stages:
   jobs:
   - job: BuildAngular
     displayName: 'Build Admin Panel'
+    timeoutInMinutes: 60
     steps:
     - task: NodeTool@0
       displayName: 'Install Node.js'
@@ -163,6 +170,7 @@ stages:
   jobs:
   - deployment: DeployFrontendDevJob
     displayName: 'Deploy Frontend to Static Web App (DEV)'
+    timeoutInMinutes: 30
     environment: 'Frontend-Development'
     strategy:
       runOnce:
@@ -204,6 +212,7 @@ stages:
   jobs:
   - deployment: DeployAdminDevJob
     displayName: 'Deploy Admin to Static Web App (DEV)'
+    timeoutInMinutes: 30
     environment: 'Admin-Development'
     strategy:
       runOnce:
@@ -245,6 +254,7 @@ stages:
   jobs:
   - deployment: DeployFrontendProdJob
     displayName: 'Deploy Frontend to Static Web App (PROD)'
+    timeoutInMinutes: 30
     environment: 'Frontend-Production'
     strategy:
       runOnce:
@@ -286,6 +296,7 @@ stages:
   jobs:
   - deployment: DeployAdminProdJob
     displayName: 'Deploy Admin to Static Web App (PROD)'
+    timeoutInMinutes: 30
     environment: 'Admin-Production'
     strategy:
       runOnce:
