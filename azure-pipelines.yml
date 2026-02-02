@@ -36,11 +36,6 @@ variables:
 pool:
   vmImage: 'ubuntu-latest'
 
-# Global timeout for all jobs (60 minutes)
-variables:
-  - name: System.Debug
-    value: false
-
 stages:
 # =============================================
 # STAGE 1: BUILD FRONTEND (React/Vite)
