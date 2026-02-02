@@ -1,0 +1,316 @@
+# Azure DevOps Pipeline - LogvanceWMS Frontend Repository
+# Bu pipeline hem React frontend hem Angular admin panel'i deploy eder
+# Trigger: develop/dev -> DEV, main/master -> PROD
+
+trigger:
+  branches:
+    include:
+      - main
+      - master
+      - dev
+      - develop
+  paths:
+    include:
+      - frontend/**
+      - frontend-admin/**
+      - azure-pipelines.yml
+
+pr:
+  branches:
+    include:
+      - main
+      - master
+      - dev
+      - develop
+  paths:
+    include:
+      - frontend/**
+      - frontend-admin/**
+
+variables:
+  nodeVersion: '20.x'
+  # API URLs
+  apiUrlDev: 'https://logvancewms-api-dev.azurewebsites.net/api'
+  apiUrlProd: 'https://logvancewms-api.azurewebsites.net/api'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+# =============================================
+# STAGE 1: BUILD FRONTEND (React/Vite)
+# =============================================
+- stage: BuildFrontend
+  displayName: 'Build React Frontend'
+  jobs:
+  - job: BuildReact
+    displayName: 'Build Frontend'
+    steps:
+    - task: NodeTool@0
+      displayName: 'Install Node.js'
+      inputs:
+        versionSpec: $(nodeVersion)
+    
+    - script: |
+        cd frontend
+        npm ci
+      displayName: 'Install Frontend Dependencies'
+    
+    - script: |
+        cd frontend
+        npm run lint
+      displayName: 'Run Frontend Linter'
+      continueOnError: true
+    
+    # DEV Build
+    - script: |
+        cd frontend
+        npm run build:staging
+      displayName: 'Build Frontend (DEV)'
+      condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/dev'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+      env:
+        VITE_API_URL: $(apiUrlDev)
+        VITE_ENVIRONMENT: 'development'
+    
+    # PROD Build
+    - script: |
+        cd frontend
+        npm run build:production
+      displayName: 'Build Frontend (PROD)'
+      condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+      env:
+        VITE_API_URL: $(apiUrlProd)
+        VITE_ENVIRONMENT: 'production'
+    
+    - task: ArchiveFiles@2
+      displayName: 'Archive Frontend Build'
+      inputs:
+        rootFolderOrFile: 'frontend/dist'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+    
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Frontend Artifacts'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'frontend-drop'
+        publishLocation: 'Container'
+
+# =============================================
+# STAGE 2: BUILD ADMIN (Angular)
+# =============================================
+- stage: BuildAdmin
+  displayName: 'Build Angular Admin Panel'
+  jobs:
+  - job: BuildAngular
+    displayName: 'Build Admin Panel'
+    steps:
+    - task: NodeTool@0
+      displayName: 'Install Node.js'
+      inputs:
+        versionSpec: $(nodeVersion)
+    
+    - script: |
+        cd frontend-admin
+        npm ci
+      displayName: 'Install Admin Dependencies'
+    
+    - script: |
+        cd frontend-admin
+        npm run ng lint || echo "Lint skipped"
+      displayName: 'Run Admin Linter'
+      continueOnError: true
+    
+    # DEV Build
+    - script: |
+        cd frontend-admin
+        npm run build -- --configuration=development || npm run build
+      displayName: 'Build Admin Panel (DEV)'
+      condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/dev'), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+    
+    # PROD Build
+    - script: |
+        cd frontend-admin
+        npm run build -- --configuration=production || npm run build
+      displayName: 'Build Admin Panel (PROD)'
+      condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    
+    - task: ArchiveFiles@2
+      displayName: 'Archive Admin Build'
+      inputs:
+        rootFolderOrFile: 'frontend-admin/dist'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/frontend-admin.zip'
+    
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Admin Artifacts'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'admin-drop'
+        publishLocation: 'Container'
+
+# =============================================
+# STAGE 3: DEPLOY FRONTEND TO DEV
+# =============================================
+- stage: DeployFrontendDev
+  displayName: 'Deploy Frontend to DEV'
+  dependsOn: BuildFrontend
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/dev'), eq(variables['Build.SourceBranch'], 'refs/heads/develop')))
+  variables:
+    - group: SWA-Tokens
+  jobs:
+  - deployment: DeployFrontendDevJob
+    displayName: 'Deploy Frontend to Static Web App (DEV)'
+    environment: 'Frontend-Development'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadBuildArtifacts@1
+            displayName: 'Download Frontend Artifacts'
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'frontend-drop'
+              downloadPath: '$(System.ArtifactsDirectory)'
+          
+          - task: ExtractFiles@1
+            displayName: 'Extract Frontend Files'
+            inputs:
+              archiveFilePatterns: '$(System.ArtifactsDirectory)/frontend-drop/frontend.zip'
+              destinationFolder: '$(Build.SourcesDirectory)/frontend-dist'
+              cleanDestinationFolder: true
+          
+          - task: AzureStaticWebApp@0
+            displayName: 'Deploy to Azure Static Web App (DEV)'
+            inputs:
+              app_location: 'frontend-dist'
+              output_location: '.'
+              api_location: ''
+              skip_app_build: true
+              azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN_DEV)'
+
+# =============================================
+# STAGE 4: DEPLOY ADMIN TO DEV
+# =============================================
+- stage: DeployAdminDev
+  displayName: 'Deploy Admin to DEV'
+  dependsOn: BuildAdmin
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/dev'), eq(variables['Build.SourceBranch'], 'refs/heads/develop')))
+  variables:
+    - group: SWA-Tokens
+  jobs:
+  - deployment: DeployAdminDevJob
+    displayName: 'Deploy Admin to Static Web App (DEV)'
+    environment: 'Admin-Development'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadBuildArtifacts@1
+            displayName: 'Download Admin Artifacts'
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'admin-drop'
+              downloadPath: '$(System.ArtifactsDirectory)'
+          
+          - task: ExtractFiles@1
+            displayName: 'Extract Admin Files'
+            inputs:
+              archiveFilePatterns: '$(System.ArtifactsDirectory)/admin-drop/frontend-admin.zip'
+              destinationFolder: '$(Build.SourcesDirectory)/admin-dist'
+              cleanDestinationFolder: true
+          
+          - task: AzureStaticWebApp@0
+            displayName: 'Deploy to Azure Static Web App (DEV)'
+            inputs:
+              app_location: 'admin-dist'
+              output_location: '.'
+              api_location: ''
+              skip_app_build: true
+              azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN_ADMIN_DEV)'
+
+# =============================================
+# STAGE 5: DEPLOY FRONTEND TO PRODUCTION
+# =============================================
+- stage: DeployFrontendProduction
+  displayName: 'Deploy Frontend to PRODUCTION'
+  dependsOn: BuildFrontend
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+  variables:
+    - group: SWA-Tokens
+  jobs:
+  - deployment: DeployFrontendProdJob
+    displayName: 'Deploy Frontend to Static Web App (PROD)'
+    environment: 'Frontend-Production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadBuildArtifacts@1
+            displayName: 'Download Frontend Artifacts'
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'frontend-drop'
+              downloadPath: '$(System.ArtifactsDirectory)'
+          
+          - task: ExtractFiles@1
+            displayName: 'Extract Frontend Files'
+            inputs:
+              archiveFilePatterns: '$(System.ArtifactsDirectory)/frontend-drop/frontend.zip'
+              destinationFolder: '$(Build.SourcesDirectory)/frontend-dist'
+              cleanDestinationFolder: true
+          
+          - task: AzureStaticWebApp@0
+            displayName: 'Deploy to Azure Static Web App (PROD)'
+            inputs:
+              app_location: 'frontend-dist'
+              output_location: '.'
+              api_location: ''
+              skip_app_build: true
+              azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN_PROD)'
+
+# =============================================
+# STAGE 6: DEPLOY ADMIN TO PRODUCTION
+# =============================================
+- stage: DeployAdminProduction
+  displayName: 'Deploy Admin to PRODUCTION'
+  dependsOn: BuildAdmin
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
+  variables:
+    - group: SWA-Tokens
+  jobs:
+  - deployment: DeployAdminProdJob
+    displayName: 'Deploy Admin to Static Web App (PROD)'
+    environment: 'Admin-Production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadBuildArtifacts@1
+            displayName: 'Download Admin Artifacts'
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'admin-drop'
+              downloadPath: '$(System.ArtifactsDirectory)'
+          
+          - task: ExtractFiles@1
+            displayName: 'Extract Admin Files'
+            inputs:
+              archiveFilePatterns: '$(System.ArtifactsDirectory)/admin-drop/frontend-admin.zip'
+              destinationFolder: '$(Build.SourcesDirectory)/admin-dist'
+              cleanDestinationFolder: true
+          
+          - task: AzureStaticWebApp@0
+            displayName: 'Deploy to Azure Static Web App (PROD)'
+            inputs:
+              app_location: 'admin-dist'
+              output_location: '.'
+              api_location: ''
+              skip_app_build: true
+              azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN_ADMIN_PROD)'

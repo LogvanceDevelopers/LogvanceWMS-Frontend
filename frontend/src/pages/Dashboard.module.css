@@ -1,0 +1,81 @@
+/* Dashboard Styles */
+.dashboard {
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.statsCard {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.statsCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.statsIcon {
+  font-size: 32px;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.statsValue {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.statsLabel {
+  color: #666;
+  font-size: 14px;
+}
+
+.chartCard {
+  height: 400px;
+  border-radius: 8px;
+}
+
+.tableCard {
+  border-radius: 8px;
+}
+
+.performanceCard {
+  border-radius: 8px;
+}
+
+.performanceItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.performanceItem:last-child {
+  border-bottom: none;
+}
+
+.userAvatar {
+  margin-right: 12px;
+}
+
+.userName {
+  font-weight: 500;
+}
+
+.taskCount {
+  color: #666;
+  font-size: 12px;
+}

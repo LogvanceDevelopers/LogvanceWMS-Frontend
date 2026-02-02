@@ -1,0 +1,110 @@
+/* Products Styles */
+.products {
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.filterCard {
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.tableCard {
+  border-radius: 8px;
+}
+
+.searchInput {
+  width: 300px;
+}
+
+.skuCell {
+  font-family: monospace;
+  background: #f5f5f5;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.productName {
+  font-weight: 500;
+}
+
+.productBarcode {
+  color: #666;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.categoryTag {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.stockCell {
+  font-weight: 600;
+}
+
+.stockLow {
+  color: #faad14;
+}
+
+.stockOut {
+  color: #ff4d4f;
+}
+
+.stockOk {
+  color: #52c41a;
+}
+
+.priceCell {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.actionButton {
+  margin-right: 8px;
+}
+
+.productImage {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.noImage {
+  width: 50px;
+  height: 50px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: #bfbfbf;
+}
+
+.formSection {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.formSectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #1a1a1a;
+}

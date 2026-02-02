@@ -1,0 +1,75 @@
+/* Inventory Styles */
+.inventory {
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.filterCard {
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.tableCard {
+  border-radius: 8px;
+}
+
+.searchInput {
+  width: 300px;
+}
+
+.statusBadge {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.statusAvailable {
+  background: #e6f7e6;
+  color: #52c41a;
+}
+
+.statusLow {
+  background: #fff7e6;
+  color: #faad14;
+}
+
+.statusOut {
+  background: #fff1f0;
+  color: #ff4d4f;
+}
+
+.lowStockRow {
+  background: #fffbe6;
+}
+
+.outOfStockRow {
+  background: #fff1f0;
+}
+
+.quantityCell {
+  font-weight: 600;
+}
+
+.skuCell {
+  font-family: monospace;
+  background: #f5f5f5;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.actionButton {
+  margin-right: 8px;
+}
