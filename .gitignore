@@ -58,3 +58,6 @@ frontend/.env.*.local
 # Don't ignore example files
 !.env.example
 !*.example
+
+# Deployment tokens (contains sensitive information)
+AZURE-DEPLOYMENT-TOKENS.md
