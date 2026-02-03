@@ -141,7 +141,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: 'Archive Admin Build'
       inputs:
-        rootFolderOrFile: 'frontend-admin/dist'
+        rootFolderOrFile: 'frontend-admin/dist/frontend-admin/browser'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/frontend-admin.zip'
