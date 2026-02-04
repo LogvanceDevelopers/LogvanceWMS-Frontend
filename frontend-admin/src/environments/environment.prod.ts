@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://logvancewms-api.azurewebsites.net/api',
-  apiUrlProd: 'https://logvancewms-api.azurewebsites.net/api'
+  apiUrl: 'https://api.logvancewms.com/api',      // Core WMS API (PROD)
+  apiUrlProd: 'https://api.logvancewms.com/api'   // Core WMS API (PROD)
 };
