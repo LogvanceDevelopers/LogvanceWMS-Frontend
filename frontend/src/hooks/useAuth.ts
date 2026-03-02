@@ -37,7 +37,19 @@ export function useAuth() {
       return response
     } catch (err: any) {
       console.error('Login error:', err)
-      const message = err.response?.data?.message || err.response?.data?.Message || err.message || 'Giriş başarısız. Lütfen kullanıcı adı ve şifrenizi kontrol edin.'
+      const status = err.response?.status
+      const backendMessage = err.response?.data?.message || err.response?.data?.Message
+      let message: string
+      if (status === 500) {
+        message = 'Sunucu geçici olarak hata veriyor. Lütfen birkaç dakika sonra tekrar deneyin veya sistem yöneticinizle iletişime geçin.'
+        if (backendMessage) message += ` (Sunucu: ${backendMessage})`
+      } else if (status === 404) {
+        message = 'Giriş servisi bulunamadı. API adresini veya ortam ayarlarını kontrol edin.'
+      } else if (status === 401) {
+        message = backendMessage || 'Kullanıcı adı veya şifre hatalı.'
+      } else {
+        message = backendMessage || err.message || 'Giriş başarısız. Lütfen kullanıcı adı ve şifrenizi kontrol edin.'
+      }
       setError(message)
       throw err
     } finally {
