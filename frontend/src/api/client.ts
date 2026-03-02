@@ -4,8 +4,9 @@ import axios from 'axios'
 // 1. VITE_API_URL (set by pipeline for different environments)
 // 2. Use relative path for Vite proxy in development
 // 3. Fallback to localhost:5000/api
-const API_BASE_URL = import.meta.env.VITE_API_URL || 
-  (import.meta.env.DEV ? '/api' : 'http://localhost:5000/api')
+const API_BASE_URL = (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.trim() !== '')
+  ? import.meta.env.VITE_API_URL
+  : (import.meta.env.DEV ? '/api' : 'http://localhost:5000/api')
 
 console.log('API Base URL:', API_BASE_URL)
 console.log('Environment:', import.meta.env.MODE)

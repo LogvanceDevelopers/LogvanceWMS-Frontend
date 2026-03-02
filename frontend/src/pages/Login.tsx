@@ -11,7 +11,7 @@ export default function Login() {
 
   const handleSubmit = async (values: { username: string; password: string; remember: boolean }) => {
     try {
-      await login(values)
+      await login({ username: values.username, password: values.password })
       // Yönlendirme useAuth içinde yapılıyor
     } catch {
       // Error is handled in useAuth
@@ -90,9 +90,21 @@ export default function Login() {
                   {isLoading ? 'Giriş Yapılıyor...' : 'Giriş Yap'}
                 </Button>
               </Form.Item>
+
+              {(import.meta.env.VITE_ADMIN_APP_URL || '/admin').trim() && (
+                <Form.Item style={{ marginBottom: 0, marginTop: 16 }}>
+                  <a
+                    href={(import.meta.env.VITE_ADMIN_APP_URL || '/admin').trim()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.adminLink}
+                  >
+                    Admin Paneli
+                  </a>
+                </Form.Item>
+              )}
             </Form>
 
-     
           </div>
         </div>
       </div>

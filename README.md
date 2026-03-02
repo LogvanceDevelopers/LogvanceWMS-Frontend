@@ -1,12 +1,20 @@
 # LogvanceWMS Frontend Repository
 
 Bu repository **LogvanceWMS** projesinin frontend uygulamalarını içerir:
-- **frontend/** - React + Vite + TypeScript (Ana kullanıcı arayüzü)
+- **frontend/** - React + Vite + TypeScript (**Ana uygulama – açılışta bu çalışır**)
 - **frontend-admin/** - Angular (Admin panel)
 
 ## 🚀 Hızlı Başlangıç
 
-### Frontend (React)
+**Açılışta (varsayılan) frontend klasörü çalışır.** Repo kökünden:
+
+```bash
+npm start
+```
+
+Bu komut `frontend` (React) uygulamasını başlatır; `http://localhost:5173` adresinde açılır.
+
+### Sadece Frontend (React)
 
 ```bash
 cd frontend
@@ -19,6 +27,8 @@ Uygulama `http://localhost:5173` adresinde açılacak.
 ### Admin Panel (Angular)
 
 ```bash
+npm run admin
+# veya
 cd frontend-admin
 npm install
 npm start

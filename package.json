@@ -1,0 +1,12 @@
+{
+  "name": "logvancewms-frontend",
+  "private": true,
+  "description": "LogvanceWMS Frontend - Açılışta frontend (React) çalışır",
+  "scripts": {
+    "start": "cd frontend && npm run dev",
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "admin": "cd frontend-admin && npm start",
+    "build:admin": "cd frontend-admin && npm run build"
+  }
+}

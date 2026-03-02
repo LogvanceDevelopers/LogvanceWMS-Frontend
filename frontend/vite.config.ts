@@ -15,11 +15,11 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        // Visual Studio'da "http" profilini kullanıyorsanız: http://localhost:5000
-        // Visual Studio'da "IIS Express" kullanıyorsanız: https://localhost:44351
-        target: 'http://localhost:5000',
+        // Yerel backend (Postman'da calisiyorsa): https://localhost:5001
+        target: 'https://localhost:5001',
         changeOrigin: true,
         secure: false,
+        rewrite: (path) => path,
       },
     },
   },
