@@ -47,7 +47,7 @@ For production (`environment.prod.ts`):
 ```typescript
 export const environment = {
   production: true,
-  apiUrl: 'https://logvancewms-api.azurewebsites.net/api'
+  apiUrl: 'https://logvancewms-core-api.azurewebsites.net/api'
 };
 ```
 

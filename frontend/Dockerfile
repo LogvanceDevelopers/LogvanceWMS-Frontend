@@ -16,7 +16,7 @@ RUN npm ci
 COPY . .
 
 # Build arguments for environment variables
-ARG VITE_API_URL=https://api.logvancewms.com/api
+ARG VITE_API_URL=https://logvancewms-core-api.azurewebsites.net/api
 ENV VITE_API_URL=$VITE_API_URL
 
 # Build application

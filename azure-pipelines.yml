@@ -31,7 +31,7 @@ variables:
   nodeVersion: '20.x'
   # API URLs
   apiUrlDev: 'https://logvancewms-api-dev.azurewebsites.net/api'
-  apiUrlProd: 'https://logvancewms-api.azurewebsites.net/api'
+  apiUrlProd: 'https://logvancewms-core-api.azurewebsites.net/api'
 
 pool:
   vmImage: 'ubuntu-latest'

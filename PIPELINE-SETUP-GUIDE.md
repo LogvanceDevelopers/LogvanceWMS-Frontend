@@ -222,7 +222,7 @@ VITE_ENVIRONMENT=development
 
 **`.env.production`** (frontend klasöründe):
 ```env
-VITE_API_URL=https://logvancewms-api.azurewebsites.net/api
+VITE_API_URL=https://logvancewms-core-api.azurewebsites.net/api
 VITE_ENVIRONMENT=production
 ```
 
@@ -240,7 +240,7 @@ export const environment = {
 ```typescript
 export const environment = {
   production: true,
-  apiUrl: 'https://logvancewms-api.azurewebsites.net/api'
+  apiUrl: 'https://logvancewms-core-api.azurewebsites.net/api'
 };
 ```
 

@@ -123,7 +123,7 @@ https://logvancewms-api-dev.azurewebsites.net/api
 
 PROD:
 ```
-https://logvancewms-api.azurewebsites.net/api
+https://logvancewms-core-api.azurewebsites.net/api
 ```
 
 ### API Test
