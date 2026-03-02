@@ -1,0 +1,12 @@
+{
+  "networking": {
+    "allowedIpRanges": [
+      "78.186.152.145/32",
+      "AzureFrontDoor.Backend"
+    ]
+  },
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "/*.{css,js,ico,png,svg,jpg,webp,woff,woff2}"]
+  }
+}
