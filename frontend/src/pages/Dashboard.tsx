@@ -7,7 +7,6 @@ import {
   GiftOutlined,
   CarOutlined,
   CheckCircleOutlined,
-  CloseCircleOutlined,
   UserOutlined,
   FileTextOutlined,
   ShoppingCartOutlined,
