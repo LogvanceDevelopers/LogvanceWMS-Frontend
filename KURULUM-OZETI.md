@@ -1,5 +1,7 @@
 # 🎉 Azure Deployment Kurulumu - ÖZET
 
+> **Not:** Repo GitHub'da [LOGVANCE/LogvanceWMS-Frontend](https://github.com/LOGVANCE/LogvanceWMS-Frontend). Azure DevOps: **Logvancewms / YeniWMS**.
+
 ## ✅ TAMAMLANAN İŞLEMLER
 
 ### 1. Azure Kaynakları Oluşturuldu ✅
@@ -22,7 +24,7 @@ Tüm token'lar `AZURE-DEPLOYMENT-TOKENS.md` dosyasında güvenli şekilde saklan
 ### 3. Git Remote Yapılandırıldı ✅
 
 ```powershell
-git remote add azure https://LogvanceDevelopers@dev.azure.com/LogvanceDevelopers/LogvanceWMS/_git/LogvanceWMS-Frontend
+git remote add azure https://Logvancewms@dev.azure.com/Logvancewms/YeniWMS/_git/LogvanceWMS-Frontend
 ```
 
 ### 4. Pipeline Dosyası Hazırlandı ✅
@@ -60,7 +62,7 @@ Sadece **3 basit adım** kaldı:
 
 ### 📍 ADIM 1: Personal Access Token Oluştur (2 dakika)
 
-1. Git: https://dev.azure.com/LogvanceDevelopers/_usersSettings/tokens
+1. Git: https://dev.azure.com/Logvancewms/_usersSettings/tokens
 2. **+ New Token** tıkla
 3. Name: `Frontend-Git-Push`
 4. Scopes: **Full access** ✅
@@ -70,7 +72,7 @@ Sadece **3 basit adım** kaldı:
 ### 📍 ADIM 2: Kodu Azure DevOps'a Push Et (1 dakika)
 
 ```powershell
-cd C:\Projects\LogvanceWMS-Frontend
+cd C:\Projects\LogvanceWms.Frontend\LogvanceWMS-Frontend
 
 # Main branch push
 git checkout main
@@ -85,7 +87,7 @@ git push azure develop
 
 ### 📍 ADIM 3: Variable Group Oluştur (3 dakika)
 
-1. Git: https://dev.azure.com/LogvanceDevelopers/LogvanceWMS/_library
+1. Git: https://dev.azure.com/Logvancewms/YeniWMS/_library
 2. **+ Variable group** tıkla
 3. Name: `SWA-Tokens`
 4. 4 token ekle (detaylar `SETUP-COMPLETE.md` dosyasında)
@@ -93,7 +95,7 @@ git push azure develop
 
 ### 📍 ADIM 4: Pipeline Oluştur (2 dakika)
 
-1. Git: https://dev.azure.com/LogvanceDevelopers/LogvanceWMS/_build
+1. Git: https://dev.azure.com/Logvancewms/YeniWMS/_build
 2. **New pipeline** tıkla
 3. **Azure Repos Git** → **LogvanceWMS-Frontend** seç
 4. **Existing YAML** → `/azure-pipelines.yml` seç

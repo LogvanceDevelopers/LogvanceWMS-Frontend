@@ -1,5 +1,7 @@
 # LogvanceWMS Frontend Repository
 
+**Kaynak:** [https://github.com/LOGVANCE/LogvanceWMS-Frontend](https://github.com/LOGVANCE/LogvanceWMS-Frontend) (LOGVANCE organizasyonu). Azure DevOps pipeline: [Logvancewms / YeniWMS](https://dev.azure.com/Logvancewms/YeniWMS/_build).
+
 Bu repository **LogvanceWMS** projesinin frontend uygulamalarını içerir:
 - **frontend/** - React + Vite + TypeScript (**Ana uygulama – açılışta bu çalışır**)
 - **frontend-admin/** - Angular (Admin panel)

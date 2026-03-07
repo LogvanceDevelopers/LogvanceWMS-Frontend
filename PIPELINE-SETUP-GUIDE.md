@@ -1,5 +1,7 @@
 # 🚀 LogvanceWMS Frontend Pipeline Setup Rehberi
 
+> **Azure DevOps:** Proje **Logvancewms / YeniWMS** — [Pipelines](https://dev.azure.com/Logvancewms/YeniWMS/_build). **GitHub:** [LOGVANCE/LogvanceWMS-Frontend](https://github.com/LOGVANCE/LogvanceWMS-Frontend).
+
 ## 📋 Özet
 
 Bu pipeline **tek bir YAML dosyasıyla** hem React frontend hem Angular admin panel'i otomatik deploy eder.

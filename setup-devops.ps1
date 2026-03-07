@@ -2,8 +2,8 @@
 # Bu script Azure DevOps'a kod push ve pipeline setup yapar
 
 param(
-    [string]$Organization = "LogvanceDevelopers",
-    [string]$Project = "LogvanceWMS",
+    [string]$Organization = "Logvancewms",
+    [string]$Project = "YeniWMS",
     [string]$RepoName = "LogvanceWMS-Frontend"
 )
 

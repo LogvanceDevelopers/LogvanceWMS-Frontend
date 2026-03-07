@@ -1,5 +1,7 @@
 # ✅ Azure Deployment Setup - TAMAMLANDI
 
+> **Not:** Repo artık **GitHub** üzerinde: [https://github.com/LOGVANCE/LogvanceWMS-Frontend](https://github.com/LOGVANCE/LogvanceWMS-Frontend). Azure DevOps pipeline için **Logvancewms / YeniWMS** projesi kullanılmaktadır.
+
 ## 🎉 Başarılı Olan İşlemler
 
 ### ✅ 1. Azure Static Web Apps Oluşturuldu
@@ -27,13 +29,13 @@ Azure DevOps remote başarıyla eklendi. ✅
 
 Git authentication için PAT gerekiyor:
 
-1. **Bu linke tıklayın:** https://dev.azure.com/LogvanceDevelopers/_usersSettings/tokens
+1. **Bu linke tıklayın:** https://dev.azure.com/Logvancewms/_usersSettings/tokens
 
 2. **+ New Token** butonuna tıklayın
 
 3. Formu doldurun:
    - **Name:** `Frontend-Git-Push`
-   - **Organization:** `LogvanceDevelopers`
+   - **Organization:** `Logvancewms`
    - **Expiration:** 90 days (veya istediğiniz)
    - **Scopes:** **Full access** veya **Code (Read & Write)** ✅
 
@@ -51,7 +53,7 @@ Git authentication için PAT gerekiyor:
 PowerShell'de çalıştırın:
 
 ```powershell
-cd C:\Projects\LogvanceWMS-Frontend
+cd C:\Projects\LogvanceWms.Frontend\LogvanceWMS-Frontend
 
 # Main branch'i push edin
 git checkout main
@@ -63,14 +65,14 @@ git push azure develop
 ```
 
 **Password istediğinde:**
-- Username: `LogvanceDevelopers` (veya email'iniz)
+- Username: `Logvancewms` (veya email'iniz)
 - Password: **Yukarıda oluşturduğunuz PAT token'ı yapıştırın**
 
 ---
 
 ### ADIM 3: Azure DevOps Variable Group Oluşturun
 
-1. **Bu linke tıklayın:** https://dev.azure.com/LogvanceDevelopers/LogvanceWMS/_library
+1. **Bu linke tıklayın:** https://dev.azure.com/Logvancewms/YeniWMS/_library
 
 2. **+ Variable group** butonuna tıklayın
 
@@ -108,13 +110,13 @@ git push azure develop
 
 ### ADIM 4: Pipeline Oluşturun
 
-1. **Bu linke tıklayın:** https://dev.azure.com/LogvanceDevelopers/LogvanceWMS/_build
+1. **Bu linke tıklayın:** https://dev.azure.com/Logvancewms/YeniWMS/_build
 
 2. **New pipeline** butonuna tıklayın
 
 3. **Azure Repos Git** seçin
 
-4. **LogvanceWMS-Frontend** repository'sini seçin
+4. **LogvanceWMS-Frontend** (veya ilgili frontend repo) repository'sini seçin
 
 5. **Existing Azure Pipelines YAML file** seçin
 
@@ -138,7 +140,7 @@ Pipeline artık çalışıyor! 🚀
 ### Pipeline İzleme
 
 Pipeline'ı buradan izleyebilirsiniz:
-https://dev.azure.com/LogvanceDevelopers/LogvanceWMS/_build
+https://dev.azure.com/Logvancewms/YeniWMS/_build
 
 ### Otomatik Deployment
 
