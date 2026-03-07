@@ -53,4 +53,33 @@ Bu ayarlar tamamsa, run başarılı olduğunda deploy otomatik olarak Azure Port
 
 ---
 
-**Özet:** Runs’ta run görmek için pipeline’ı **Azure Repos** → **LogvanceWMS-Frontend** ile oluşturun ve kodu `git push azure main` / `git push azure develop` ile bu repoya gönderin. Deploy, pipeline’daki YAML ve variable group ile Azure Portal’a yapılır.
+## 4. Repo taşındıktan sonra pipeline tetiklenmiyorsa (GitHub token)
+
+Pipeline **GitHub**’dan tetikleniyorsa ve repolar **LogvanceDevelopers** → **LOGVANCE** taşındıysa, eski GitHub bağlantısı yeni org/repo’ya erişemiyor olabilir. **Yeni token veya service connection güncellemesi gerekir.**
+
+### Ne yapmalı?
+
+1. **Yeni GitHub PAT (Personal Access Token)**
+   - GitHub → **Settings** → **Developer settings** → [Personal access tokens](https://github.com/settings/tokens)
+   - **Generate new token (classic)** veya **Fine-grained**
+   - **LOGVANCE** organizasyonuna ve **LogvanceWMS-Frontend** repo’suna **okuma** erişimi verin (en az `repo` / **Contents: Read-only**).
+   - Token’ı kopyalayın (bir daha gösterilmez).
+
+2. **Azure DevOps’ta service connection güncelleme**
+   - [YeniWMS Project Settings](https://dev.azure.com/Logvancewms/YeniWMS/_settings/adminservices) → **Service connections**
+   - GitHub kullanan pipeline’ın bağlı olduğu **GitHub** service connection’ı bulun → **Edit** (veya yeni connection ekleyin)
+   - **Re-authorize** / **Authorize** ile GitHub’a tekrar giriş yapın veya **PAT** alanına yeni oluşturduğunuz token’ı yapıştırın
+   - **Verify** → **Save**
+
+3. **Pipeline’ın doğru repoya bağlı olduğunu kontrol edin**
+   - **Pipelines** → ilgili pipeline → **Edit** (veya **Settings**)
+   - Repository: **LOGVANCE / LogvanceWMS-Frontend** ve branch’ler (main, develop) doğru mu kontrol edin
+   - Gerekirse pipeline’ı silip **New pipeline** → **GitHub** → **LOGVANCE/LogvanceWMS-Frontend** → `/azure-pipelines.yml` ile yeniden oluşturun
+
+Bu adımlardan sonra GitHub’a push yaptığınızda Azure DevOps pipeline’ı tekrar tetiklenir.
+
+**Alternatif:** Tetiklenmeyi token’a bağlamak istemezseniz, pipeline kaynağını **Azure Repos** (LogvanceWMS-Frontend) yapıp kodu `git push azure main` ile Azure’a gönderirsiniz; böylece GitHub token’a ihtiyaç kalmaz.
+
+---
+
+**Özet:** Runs’ta run görmek için pipeline’ı **Azure Repos** → **LogvanceWMS-Frontend** ile oluşturun ve kodu `git push azure main` / `git push azure develop` ile bu repoya gönderin. Deploy, pipeline’daki YAML ve variable group ile Azure Portal’a yapılır. Pipeline GitHub’dan tetikleniyorsa ve repo LOGVANCE’a taşındıysa, **yeni GitHub PAT + service connection güncellemesi** gerekir.
