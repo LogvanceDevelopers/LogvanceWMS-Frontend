@@ -1,6 +1,6 @@
 # Azure DevOps Pipeline - LogvanceWMS Frontend Repository
-# Bu pipeline hem React frontend hem Angular admin panel'i deploy eder
-# Trigger: develop/dev -> DEV, main/master -> PROD
+# Bu pipeline hem React frontend hem Angular admin panel'i deploy eder.
+# Trigger: develop/dev -> DEV, main/master -> PROD. Runs: https://dev.azure.com/Logvancewms/YeniWMS/_build?view=runs
 
 trigger:
   branches:
